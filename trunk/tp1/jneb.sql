@@ -145,7 +145,12 @@ CREATE TABLE `control_asignacion_chofer` (
   `control` int(10) unsigned NOT NULL,
   `chofer` int(8) unsigned NOT NULL,
   `realizacion_viaje` int(10) unsigned NOT NULL,
-  KEY `control_asignacion_chofer_chofer_fk` (`chofer`)
+  PRIMARY KEY (`chofer`,`control`,`realizacion_viaje`),
+  KEY `control_asignacion_chofer_chofer_fk` (`chofer`),
+  KEY `control_asignacion_chofer_chofer_realizacion_viaje_fk` (`chofer`,`realizacion_viaje`),
+  KEY `control_asignacion_chofer_control_fk` (`control`),
+  CONSTRAINT `control_asignacion_chofer_chofer_realizacion_viaje_fk` FOREIGN KEY (`chofer`, `realizacion_viaje`) REFERENCES `realizacion_viaje_chofer` (`chofer`, `realizacion_viaje`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `control_asignacion_chofer_control_fk` FOREIGN KEY (`control`) REFERENCES `control` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -275,10 +280,11 @@ DROP TABLE IF EXISTS `realizacion_viaje_chofer`;
 CREATE TABLE `realizacion_viaje_chofer` (
   `chofer` int(8) unsigned NOT NULL,
   `realizacion_viaje` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`chofer`,`realizacion_viaje`),
   KEY `realizacion_viaje_chofer_chofer_fk` (`chofer`),
   KEY `realizacion_viaje_chofer_viaje` (`realizacion_viaje`),
-  CONSTRAINT `realizacion_viaje_chofer_realizacion_viaje_fk` FOREIGN KEY (`realizacion_viaje`) REFERENCES `realizacion_viaje` (`viaje`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `realizacion_viaje_chofer_chofer_fk` FOREIGN KEY (`chofer`) REFERENCES `chofer` (`numero_dni`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `realizacion_viaje_chofer_chofer_fk` FOREIGN KEY (`chofer`) REFERENCES `chofer` (`numero_dni`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `realizacion_viaje_chofer_realizacion_viaje_fk` FOREIGN KEY (`realizacion_viaje`) REFERENCES `realizacion_viaje` (`viaje`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -468,10 +474,11 @@ DROP TABLE IF EXISTS `viaje_chofer`;
 CREATE TABLE `viaje_chofer` (
   `viaje` int(10) unsigned NOT NULL,
   `chofer` int(8) unsigned NOT NULL,
+  PRIMARY KEY (`viaje`,`chofer`),
   KEY `viaje_chofer_viaje_fk` (`viaje`),
   KEY `viaje_chofer_chofer_fk` (`chofer`),
-  CONSTRAINT `viaje_chofer_viaje_fk` FOREIGN KEY (`viaje`) REFERENCES `viaje` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `viaje_chofer_chofer_fk` FOREIGN KEY (`chofer`) REFERENCES `chofer` (`numero_dni`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `viaje_chofer_chofer_fk` FOREIGN KEY (`chofer`) REFERENCES `chofer` (`numero_dni`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `viaje_chofer_viaje_fk` FOREIGN KEY (`viaje`) REFERENCES `viaje` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -493,4 +500,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-09-15  3:53:10
+-- Dump completed on 2011-09-15  4:02:30
