@@ -501,3 +501,44 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2011-09-15  4:02:30
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `recorridosConTodasRutasUsadas` $$
+CREATE PROCEDURE `recorridosConTodasRutasUsadas`()
+BEGIN
+
+SELECT re.* FROM recorrido re
+LEFT JOIN ruta ru
+          LEFT JOIN realizacion_viaje rv
+          ON ru.id = rv.ruta
+ON ru.recorrido=re.id
+WHERE DATE_SUB(CURDATE(),INTERVAL 1 YEAR) < rv.fechapartida
+GROUP BY re.id
+HAVING count(ru.id)>1 and count(ru.id) = count(rv.ruta);
+
+END $$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS `choferesQueManejaronLosNuevos` $$
+CREATE PROCEDURE `choferesQueManejaronLosNuevos`()
+BEGIN
+
+DECLARE cantidad INT(8) DEFAULT 0;
+SELECT count(*) INTO cantidad FROM vehiculo WHERE fecha_compra > DATE_SUB(CURDATE(),INTERVAL 2 YEAR);
+SELECT c.* FROM chofer c
+LEFT JOIN realizacion_viaje_chofer rvc
+          LEFT JOIN realizacion_viaje rv
+          ON rv.viaje = rvc.realizacion_viaje
+ON rvc.chofer=c.numero_dni
+GROUP BY c.numero_dni
+HAVING count(distinct rv.vehiculo) = cantidad;
+
+END $$
+
+DELIMITER ;
