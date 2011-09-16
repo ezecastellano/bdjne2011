@@ -396,7 +396,7 @@ CREATE TABLE `viaje` (
   KEY `viaje_recorrido_id` (`recorrido`),
   KEY `viaje_recorrido_fk` (`recorrido`),
   KEY `viaje_vehiculo_fk` (`vehiculo`),
-  CONSTRAINT `viaje_recorrido_fk` FOREIGN KEY (`recorrido`) REFERENCES `viaje` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `viaje_recorrido_fk` FOREIGN KEY (`recorrido`) REFERENCES `recorrido` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `viaje_vehiculo_fk` FOREIGN KEY (`vehiculo`) REFERENCES `vehiculo` (`patente`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
