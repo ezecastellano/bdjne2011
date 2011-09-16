@@ -34,19 +34,12 @@ CREATE TABLE `contingencia` (
 
 CREATE TABLE `control` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `chofer` int(8) unsigned NOT NULL,
-  `viaje` int(10) unsigned NOT NULL,
   `tipo` int(10) unsigned NOT NULL,
   `resultado` varchar(45) NOT NULL,
   `fecha` date NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `contro_chofer_viaje` (`viaje`,`chofer`,`tipo`) USING BTREE,
-  KEY `control_chofer_numero_dni` (`chofer`) USING BTREE,
-  KEY `control_viaje_fk` (`viaje`),
   KEY `control_tipo_control_fk` (`tipo`),
-  CONSTRAINT `control_chofer_fk` FOREIGN KEY (`chofer`) REFERENCES `chofer` (`numero_dni`),
   CONSTRAINT `control_tipo_control_fk` FOREIGN KEY (`tipo`) REFERENCES `tipo_control` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `control_viaje_fk` FOREIGN KEY (`viaje`) REFERENCES `viaje` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `control_asignacion_chofer` (
