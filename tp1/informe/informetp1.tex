@@ -18,6 +18,8 @@
 \usepackage{amsmath}
 \usepackage{algorithmic}
 \usepackage{sidecap}
+\usepackage{ulem} 
+
 \parindent = 0 pt
 \parskip = 11 pt
 
@@ -37,6 +39,13 @@
     linkcolor=blue,%
     urlcolor=blue
 }
+
+\def\dashuline{\bgroup 
+  \ifdim\ULdepth=\maxdimen  % Set depth based on font, if not set already
+   \settodepth\ULdepth{(j}\advance\ULdepth.4pt\fi
+  \markoverwith{\kern.15em
+  \vtop{\kern\ULdepth \hrule width .3em}%
+  \kern.15em}\ULon}
 
 
 \addtolength{\oddsidemargin}{-1in}
@@ -66,7 +75,7 @@
 \newpage
 \section{MER}
 		\begin{figure}[ht!]
-			\includegraphics[angle=90,height=19.5cm]{mer.png}
+			\includegraphics[angle=90,height=19.5cm]{../mer/mer.png}
 			\label{fig:der}
 		\end{figure}
 \newpage
@@ -74,7 +83,7 @@
 
 \subsection{Decisiones tomadas}
 \begin{enumerate}
-	\item Modelamos las observaciones como una entidad separada, por que en el dominio podría ser importante encontrar 		todos los choferes que usen anteojos, por ejemplo. Las observaciones se discriminan por estar tipificadas.
+	\item Modelamos las observaciones como una entidad separada, por que en el dominio podría ser importante encontrar todos los choferes que usen anteojos, por ejemplo. Las observaciones se discriminan por estar tipificadas.
 	\item La antigüedad del vehículo, se deriva a partir de su fecha de compra.
 	\item Se modela que no hay peajes poniendo un 0 y no consideramos que sea una entidad separada, pues no hay otra información relevante sobre ellos.
 	\item En un principio habíamos modelado el campo condiciones climáticas pensándolo como una relación con un atributo asociado según el periodo del año/condición climática, sin embargo descartamos esta solución pues nos hacia modelar cosas por demás que no encontramos necesario según en el enunciado.
@@ -83,28 +92,156 @@
 	\item En los vehículos, asumimos que el estado es si está en reparación o no, y no algo adicional. Un vehículo se encuentra en reparación si tiene fecha de ingreso al taller. No guardamos el historial de reparaciones realizadas. 
 	\item En nuestro modelo los viajes realizados puede haber sido hechos por choferes con licencias vencidas. Si modeláramos esto nos limitaría muchas situaciones posibles validas. Además como no guardamos historial de licencias, no podemos saber si hizo un viaje con la licencia vencida.
 	\item La planificación de los viajes se realiza en función de un solo vehículo. 
-	\item Tanto y el vehículo y el chofer utilizados pueden ser diferentes a los propuestos durante la planificación.
+	\item Tanto el vehículo como el chofer de un viaje realizado pueden ser diferentes a los propuestos durante la planificación.
+	\item Para guardar la informaci\'on sobre los viajes planificados una vez que ser realizan, los modelamos como tablas distintas. La PK del viaje realizado es la FK al viaje planificado.
 \end{enumerate}
 
 \section{MR}
 
+\subsection{Esquema}
+
+\textbf{TipoContingencia}(\underline{id}, descripci\'on)
+
+PK = CK = \{idTipoContingencia\}
+\medskip
+
+
+\textbf{Contingencia}(\underline{c\'odigo}, descripci\'on, \dashuline{idTipoContingencia}, \dashuline{idViaje})
+
+PK = CK =\{c\'odigo\}
+
+FK = \{idTipoContingencia, idViaje\}
+\medskip 
+
+\textbf{Viaje}(\underline{idViaje}, fechaPartidaPlanificada, fechaLlegadaPlanificada ,\dashuline{idRecorrido}, \dashuline{idVehiculo} )
+
+PK = CK = \{idViaje\}
+
+FK = \{ idRecorrido, idVehiculo\}
+\medskip 
+
+
+\textbf{RealizacionViaje}(\underline{\dashuline{idViaje}}, fechaPartida, fechaLlegada ,\dashuline{idRuta}, \dashuline{idVehiculo} )
+
+PK = CK = \{idViaje\}
+
+FK = \{ idViaje, idRuta, idVehiculo\}
+\medskip 
+
+\textbf{Vehiculo}(\underline{patente}, fechaDeCompra, modelo, marca, capacidad, fechaDeIngresoAlTaller)
+
+PK = CK =\{patente\}
+
+FK = \{\}
+\medskip 
+
+\textbf{Recorrido}(\underline{idRecorrido},\dashuline{idCiudadOrigen}, \dashuline{idCiudadDestino} )
+
+PK = CK =\{idRecorrido\}
+
+FK = \{idCiudadOrigen, idCuidadDestino\}
+\medskip
+
+\textbf{Ciudad}(\underline{idCiudad}, nombre, direcci\'on )
+
+PK = \{idCiudad\}
+
+CK =\{direccion\}
+
+FK = \{\}
+\medskip
+
+
+\textbf{Ruta}(\underline{idRuta}, cantidadKm, cantidadPeajes, condicionesCamino, tiempoEstimado, condicionesClimaticasSegunPeriodo )
+
+PK = CK =\{idRuta\}
+
+FK = \{\}
+\medskip
+
+
+\textbf{Control}(\underline{idControl}, resultado, fecha,\dashuline{idTipoControl}, \dashuline{idChofer}, \dashuline{idViaje}  )
+
+PK = CK =\{idControl\}
+
+FK = \{(idChofer,idViaje), idTipoControl\}
+\medskip
+
+\textbf{TipoControl}(\underline{idTipoControl}, descripcion  )
+
+PK = CK =\{idTipoControl\}
+
+FK = \{\}
+\medskip
+
+\textbf{Licencia}(\underline{numero}, fechaRenovacion, fechaObtencion  )
+
+PK = CK =\{numero\}
+
+FK = \{\}
+\medskip
+
+
+\textbf{ObservacionLicencia}(\underline{codigo}, descripcion,  )
+
+PK = CK =\{codigo\}
+
+FK = \{\}
+\medskip
+
+\textbf{TieneAsociada}(\underline{idLicencia}, \underline{idObservacionLicencia}  )
+
+PK = CK =\{(idLicencia, idObservacionLicencia)\}
+
+FK = \{idLicencia, idObservacionLicencia\}
+\medskip
+
+\textbf{Chofer}(\underline{codigo}, descripcion, \dashuline{idLiciencia} )
+
+PK = CK =\{codigo\}
+
+FK = \{idLiciencia\}
+\medskip
+
+\textbf{AsignadoA}(\underline{idChofer}, \underline{idViaje}  )
+
+PK = CK =\{(idLicencia, idObservacionLicencia)\}
+
+FK = \{idLicencia, idObservacionLicencia\}
+\medskip
+
+\textbf{Conduce}(\underline{idChofer}, \underline{idViajeRealizado}  )
+
+PK = CK =\{(idChofer, idViajeRealizado)\}
+
+FK = \{idChofer, idViajeRealizado\}
+\medskip
+
+
+
+
+
+
+
+
+
 \section{SQL}
 
 \subsection{Stored Procedures}
-		\lstinputlisting{procedures.sql}
+		\lstinputlisting{../sql/procedures.sql}
 
 		\bigskip
 		\bigskip
 \subsection{Triggers}
-		\lstinputlisting{triggers.sql}
+		\lstinputlisting{../sql/triggers.sql}
 		
 		\newpage
 \subsection{Diseño Físico}
 		\begin{figure}[ht!]
-			\noindent\hspace*{-1cm}\includegraphics[height=20cm]{model.png}
+			\noindent\hspace*{-1cm}\includegraphics[height=20cm]{../model.png}
 			\label{fig:fisico}
 		\end{figure}
 		
-		\lstinputlisting{structure.sql}
+		\lstinputlisting{../sql/structure.sql}
 
 \end{document}
