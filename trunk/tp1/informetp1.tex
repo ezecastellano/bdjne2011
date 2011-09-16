@@ -1,0 +1,110 @@
+\documentclass[a4paper,spanish] {article} 
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{amssymb}
+\pagestyle{empty}
+
+\newcommand{\real}{\ensuremath{\mathbb{R}}}
+
+\usepackage [spanish] {babel} 
+\usepackage [latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{caratula}
+\usepackage{subfig}
+\usepackage{dsfont}
+\usepackage{algorithm}
+\usepackage{amsmath}
+\usepackage{algorithmic}
+\usepackage{sidecap}
+\parindent = 0 pt
+\parskip = 11 pt
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\pagestyle{empty}
+
+
+
+%links
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,%
+    citecolor=blue,%
+    filecolor=blue,%
+    linkcolor=blue,%
+    urlcolor=blue
+}
+
+
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\textwidth}{2in}
+
+
+\begin{document}
+\pagestyle{headings}
+
+\newpage
+
+\materia{Bases de datos}
+\submateria{Segundo Cuatrimestre del 2011}
+\titulo{Trabajo Pr\'actico 1: MER, MR, SQL}
+
+
+\integrante{Ezequiel Castellano}{161/08}{ezequielcastellano@gmail.com}
+\integrante{Juan Edi}{?/08}{jedi11235@gmail.com}
+\integrante{Carolina Hadad}{367/08}{carolinahadad@gmail.com}
+\integrante{Mariano Semelman}{?/08}{ marianosemelman@gmail.com}
+
+\maketitle
+
+\newpage
+\tableofcontents
+\newpage
+\newpage
+\section{MER}
+		\begin{figure}[ht!]
+			\includegraphics[angle=90,height=19.5cm]{mer.png}
+			\label{fig:der}
+		\end{figure}
+\newpage
+
+
+\subsection{Decisiones tomadas}
+\begin{enumerate}
+	\item Modelamos las observaciones como una entidad separada, por que en el dominio podría ser importante encontrar 		todos los choferes que usen anteojos, por ejemplo. Las observaciones se discriminan por estar tipificadas.
+	\item La antigüedad del vehículo, se deriva a partir de su fecha de compra.
+	\item Se modela que no hay peajes poniendo un 0 y no consideramos que sea una entidad separada, pues no hay otra información relevante sobre ellos.
+	\item En un principio habíamos modelado el campo condiciones climáticas pensándolo como una relación con un atributo asociado según el periodo del año/condición climática, sin embargo descartamos esta solución pues nos hacia modelar cosas por demás que no encontramos necesario según en el enunciado.
+	\item Modelamos los viajes realizados asociándolos a un viaje, para no perder la información de un viaje planificado al realizarlo y mantener la relación entre estos.
+	\item Como constraint la aridad de la relación chofer asignado a viaje planificado es como máximo tres choferes asignados a un viaje planificado.
+	\item En los vehículos, asumimos que el estado es si está en reparación o no, y no algo adicional. Un vehículo se encuentra en reparación si tiene fecha de ingreso al taller. No guardamos el historial de reparaciones realizadas. 
+	\item En nuestro modelo los viajes realizados puede haber sido hechos por choferes con licencias vencidas. Si modeláramos esto nos limitaría muchas situaciones posibles validas. Además como no guardamos historial de licencias, no podemos saber si hizo un viaje con la licencia vencida.
+	\item La planificación de los viajes se realiza en función de un solo vehículo. 
+	\item Tanto y el vehículo y el chofer utilizados pueden ser diferentes a los propuestos durante la planificación.
+\end{enumerate}
+
+\section{MR}
+
+\section{SQL}
+
+\subsection{Stored Procedures}
+		\lstinputlisting{procedures.sql}
+
+		\bigskip
+		\bigskip
+\subsection{Triggers}
+		\lstinputlisting{triggers.sql}
+		
+		\newpage
+\subsection{Diseño Físico}
+		\begin{figure}[ht!]
+			\noindent\hspace*{-1cm}\includegraphics[height=20cm]{model.png}
+			\label{fig:fisico}
+		\end{figure}
+		
+		\lstinputlisting{structure.sql}
+
+\end{document}
