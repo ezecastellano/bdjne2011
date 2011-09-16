@@ -1,4 +1,4 @@
-﻿DELIMITER $$
+﻿dosConTodasRutasUsadaschoferesQueManejaronTodosLosNuevosrELIMITER $$
 
 DROP PROCEDURE IF EXISTS `recorridosConTodasRutasUsadas` $$
 CREATE PROCEDURE `recorridosConTodasRutasUsadas`()
@@ -11,7 +11,7 @@ LEFT JOIN ruta ru
 ON ru.recorrido=re.id
 WHERE DATE_SUB(CURDATE(),INTERVAL 1 YEAR) < rv.fecha_partida
 GROUP BY re.id
-HAVING count(ru.id)>1 and count(ru.id) = count(rv.ruta);
+HAVING count(ru.id)>1 and count(ru.id) = count(DISTINCT rv.ruta);
 
 END $$
 
@@ -29,7 +29,10 @@ SELECT c.* FROM chofer c
 LEFT JOIN realizacion_viaje_chofer rvc
           LEFT JOIN realizacion_viaje rv
           ON rv.viaje = rvc.realizacion_viaje
+          LEFT JOIN vehiculo v ON
+                v.patente = rv.vehiculo
 ON rvc.chofer=c.numero_dni
+WHERE v.fecha_compra > DATE_SUB(CURDATE(),INTERVAL 2 YEAR)
 GROUP BY c.numero_dni
 HAVING count(distinct rv.vehiculo) = cantidad;
 
