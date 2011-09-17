@@ -1,4 +1,4 @@
-﻿dosConTodasRutasUsadaschoferesQueManejaronTodosLosNuevosrELIMITER $$
+DELIMITER $$
 
 DROP PROCEDURE IF EXISTS `recorridosConTodasRutasUsadas` $$
 CREATE PROCEDURE `recorridosConTodasRutasUsadas`()
