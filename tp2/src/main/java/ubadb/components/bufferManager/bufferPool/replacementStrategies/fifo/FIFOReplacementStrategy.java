@@ -1,35 +1,22 @@
 package ubadb.components.bufferManager.bufferPool.replacementStrategies.fifo;
 
-import java.util.Collection;
-import java.util.Date;
-
 import ubadb.common.Page;
 import ubadb.components.bufferManager.bufferPool.BufferFrame;
+import ubadb.components.bufferManager.bufferPool.replacementStrategies.FrameComparisonReplacementStrategy;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.PageReplacementStrategy;
-import ubadb.exceptions.PageReplacementStrategyException;
 
-public class FIFOReplacementStrategy implements PageReplacementStrategy
+public class FIFOReplacementStrategy extends FrameComparisonReplacementStrategy implements PageReplacementStrategy
 {
-	public BufferFrame findVictim(Collection<BufferFrame> bufferFrames) throws PageReplacementStrategyException
-	{
-		FIFOBufferFrame victim = null;
-		Date oldestReplaceablePageDate = null;
-		
-		for(BufferFrame bufferFrame : bufferFrames)
-		{
-			FIFOBufferFrame fifoBufferFrame = (FIFOBufferFrame) bufferFrame; //safe cast as we know all frames are of this type
-			if(fifoBufferFrame.canBeReplaced() && (oldestReplaceablePageDate==null || fifoBufferFrame.getCreationDate().before(oldestReplaceablePageDate)))
-			{
-				victim = fifoBufferFrame;
-				oldestReplaceablePageDate = fifoBufferFrame.getCreationDate();
-			}
-		}
-		
-		if(victim == null)
-			throw new PageReplacementStrategyException("No page can be removed from pool");
-		else
-			return victim;
-	}
+    
+    /** @see FrameComparisonReplacementStrategy#shoudReplace(BufferFrame, BufferFrame) */
+    @Override
+    protected boolean shoudReplace(BufferFrame currentVictim, BufferFrame frame) {
+        //safe cast as we know all frames are of this type
+        FIFOBufferFrame current = (FIFOBufferFrame) currentVictim;
+        FIFOBufferFrame other = (FIFOBufferFrame) frame;
+        
+        return other.getCreationDate().before(current.getCreationDate());
+    }
 
 	public BufferFrame createNewFrame(Page page)
 	{
