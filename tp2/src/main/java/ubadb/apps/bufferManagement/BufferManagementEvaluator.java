@@ -39,7 +39,9 @@ public class BufferManagementEvaluator
 	            String strategyName = entry.getKey();
                 DiskManagerFaultCounterMock diskManagerFaultCounterMock = new DiskManagerFaultCounterMock();
                 BufferManager bufferManager = createBufferManager(diskManagerFaultCounterMock, entry.getValue());
-                double hitRate = calculateHitRate(bufferManager, trace, diskManagerFaultCounterMock);
+                int requestCount = runTrace(bufferManager, trace);
+                int faultsCount = diskManagerFaultCounterMock.getFaultsCount();
+                double hitRate = calculateHitRate(faultsCount, requestCount);
                 
                 System.out.println(strategyName + ": " + hitRate);
             }
@@ -47,8 +49,12 @@ public class BufferManagementEvaluator
         }
 	}
 
-	private static double calculateHitRate(BufferManager bufferManager, PageReferenceTrace trace, 
-                        DiskManagerFaultCounterMock diskManagerFaultCounterMock) throws Exception {
+	/**
+	 * runs a {@link PageReferenceTrace}
+	 * 
+	 * @return requestCount.
+	 */
+	private static int runTrace(BufferManager bufferManager, PageReferenceTrace trace) throws Exception {
         int requestsCount = 0;
         
         for(PageReference pageReference : trace.getPageReferences())
@@ -72,8 +78,7 @@ public class BufferManagementEvaluator
             }
         }
         
-        int faultsCount = diskManagerFaultCounterMock.getFaultsCount();
-        return calculateHitRate(faultsCount, requestsCount);
+        return requestsCount;
 	}
 	
 	private static double calculateHitRate(int faults, int requests)
