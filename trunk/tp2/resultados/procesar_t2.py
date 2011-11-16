@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 
 def conjuntizar(entradas, i):
-	return list(set([x[i] for x in entradas]))
+	res = list(set([x[i] for x in entradas]))
+	res.sort()
+	return res
+
+def dosplitandtuple(entrada):
+	entrada = entrada.split(',')
+	return (int(entrada[0]), entrada[1], int(entrada[2]), float(entrada[3]))
 
 f = file('t2.out','r')
 datos = f.read()
 f.close()
-entradas = [tuple(entrada.split(',')) for entrada in datos.splitlines()[1:]]
+entradas = [dosplitandtuple(entrada) for entrada in datos.splitlines()[1:]]
 
 seq = conjuntizar(entradas, 2)
 buf_num = conjuntizar(entradas, 0)
@@ -23,8 +29,8 @@ for x in seq:
 for x in entradas:
 	eldic[x[2]][x[0]][x[1]] = x[3]
 
-for x in eldic:
-	for y in eldic[x]:
+for x in seq:
+	for y in buf_num:
 		print x, y, eldic[x][y]['FIFO'], eldic[x][y]['LRU'], eldic[x][y]['MRU']
 
 
