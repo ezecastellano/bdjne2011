@@ -7,11 +7,13 @@ import ubadb.components.bufferManager.bufferPool.replacementStrategies.PageRepla
  * {@link PageReplacementStrategy} that chooses the least recently used frame as the victim.
  * 
  */
-public class LRUReplacementStrategy extends RecentUsageReplacementStrategy implements PageReplacementStrategy {
+public class LRUReplacementStrategy extends RecentUsageReplacementStrategy implements PageReplacementStrategy 
+{
 
     /** @see FrameComparisonReplacementStrategy#shoudReplace(BufferFrame, BufferFrame) */
     @Override
-    protected boolean shoudReplace(BufferFrame currentVictim, BufferFrame frame) {
+    protected boolean shoudReplace(BufferFrame currentVictim, BufferFrame frame) 
+    {
         TrackedUsageBufferFrame current = (TrackedUsageBufferFrame) currentVictim;
         TrackedUsageBufferFrame other = (TrackedUsageBufferFrame) frame;
         return other.getLastReferenceDate().before(current.getLastReferenceDate());

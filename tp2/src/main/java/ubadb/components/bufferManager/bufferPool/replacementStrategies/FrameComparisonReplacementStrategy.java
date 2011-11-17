@@ -10,10 +10,9 @@ import ubadb.exceptions.PageReplacementStrategyException;
  * the collection of {@link BufferFrame}s and comparing them.
  * 
  * 
- * @author Juan Edi
- * @since Nov 5, 2011
  */
-public abstract class FrameComparisonReplacementStrategy implements PageReplacementStrategy {
+public abstract class FrameComparisonReplacementStrategy implements PageReplacementStrategy 
+{
 
     /** @see PageReplacementStrategy#findVictim(Collection) */
     public BufferFrame findVictim(Collection<BufferFrame> bufferFrames) throws PageReplacementStrategyException 

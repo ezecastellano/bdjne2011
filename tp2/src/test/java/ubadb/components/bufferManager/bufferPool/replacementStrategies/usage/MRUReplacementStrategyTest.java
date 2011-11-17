@@ -9,20 +9,20 @@ import org.junit.Test;
 import ubadb.components.bufferManager.bufferPool.BufferFrame;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.BaseReplacementStrategyTest;
 import ubadb.components.bufferManager.bufferPool.replacementStrategies.PageReplacementStrategy;
-import ubadb.components.bufferManager.bufferPool.replacementStrategies.usage.LRUReplacementStrategy;
-import ubadb.components.bufferManager.bufferPool.replacementStrategies.usage.MRUReplacementStrategy;
 import ubadb.mocks.MockObjectFactory;
 import ubadb.util.TestUtil;
 
 /**
- * Test for {@link LRUReplacementStrategy}
+ * Test for {@link MRUReplacementStrategy}
  * 
  */
-public class MRUReplacementStrategyTest extends BaseReplacementStrategyTest {
+public class MRUReplacementStrategyTest extends BaseReplacementStrategyTest
+{
 
     /** @see BaseReplacementStrategyTest#createStrategy() */
     @Override
-    protected PageReplacementStrategy createStrategy() {
+    protected PageReplacementStrategy createStrategy() 
+    {
         return new MRUReplacementStrategy();
     }
 

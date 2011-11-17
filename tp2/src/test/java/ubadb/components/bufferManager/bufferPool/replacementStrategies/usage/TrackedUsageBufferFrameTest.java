@@ -8,8 +8,10 @@ import ubadb.components.bufferManager.bufferPool.replacementStrategies.usage.Tra
 import ubadb.mocks.MockObjectFactory;
 import ubadb.util.TestUtil;
 
-public class TrackedUsageBufferFrameTest {
+public class TrackedUsageBufferFrameTest
+{
 
+    /** Verifies that a "pin" on the frame updates the last reference date */
     @Test
     public void testPinReferenceDate() throws Exception
     {
@@ -23,6 +25,7 @@ public class TrackedUsageBufferFrameTest {
         assertTrue(bufferFrame1.getLastReferenceDate().before(bufferFrame0.getLastReferenceDate()));
     }
 
+    /** Verifies that an "unpin" on the frame updates the last reference date */
     @Test
     public void testUnpinReferenceDate() throws Exception
     {
