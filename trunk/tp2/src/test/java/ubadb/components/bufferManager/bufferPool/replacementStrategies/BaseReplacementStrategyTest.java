@@ -15,7 +15,8 @@ import ubadb.mocks.MockObjectFactory;
  * Common test for {@link PageReplacementStrategy} implementations.
  * 
  */
-public abstract class BaseReplacementStrategyTest {
+public abstract class BaseReplacementStrategyTest
+{
 
     private PageReplacementStrategy strategy;
     
@@ -50,7 +51,8 @@ public abstract class BaseReplacementStrategyTest {
         assertEquals(frame2,getStrategy().findVictim(Arrays.asList(frame0,frame1,frame2)));
     }
     
-    protected PageReplacementStrategy getStrategy() {
+    protected PageReplacementStrategy getStrategy() 
+    {
         return strategy;
     }
     

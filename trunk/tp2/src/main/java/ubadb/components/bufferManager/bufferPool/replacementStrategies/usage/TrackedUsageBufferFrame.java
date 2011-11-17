@@ -11,33 +11,39 @@ import ubadb.exceptions.BufferFrameException;
  * (via calls to {@link BufferFrame#pin()} and {@link BufferFrame#unpin()}).
  * 
  */
-public class TrackedUsageBufferFrame extends BufferFrame {
+public class TrackedUsageBufferFrame extends BufferFrame 
+{
 
     private Date lastReferenceDate;
     
     /** Creates the TrackedUsageBufferFrame. */
-    public TrackedUsageBufferFrame(Page page) {
+    public TrackedUsageBufferFrame(Page page) 
+    {
         super(page);
     }
 
     @Override
-    public void pin() {
+    public void pin() 
+    {
         super.pin();
         updateLastReferenceDate();
     }
 
     @Override
-    public void unpin() throws BufferFrameException {
+    public void unpin() throws BufferFrameException 
+    {
         super.unpin();
         updateLastReferenceDate();
     }
 
     /** @return the last time the frame was referenced. */
-    public Date getLastReferenceDate() {
+    public Date getLastReferenceDate() 
+    {
         return lastReferenceDate;
     }
     
-    private void updateLastReferenceDate() {
+    private void updateLastReferenceDate() 
+    {
         lastReferenceDate = new Date();
     }
 }

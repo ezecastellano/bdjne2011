@@ -10,7 +10,8 @@ public class FIFOReplacementStrategy extends FrameComparisonReplacementStrategy 
     
     /** @see FrameComparisonReplacementStrategy#shoudReplace(BufferFrame, BufferFrame) */
     @Override
-    protected boolean shoudReplace(BufferFrame currentVictim, BufferFrame frame) {
+    protected boolean shoudReplace(BufferFrame currentVictim, BufferFrame frame) 
+    {
         //safe cast as we know all frames are of this type
         FIFOBufferFrame current = (FIFOBufferFrame) currentVictim;
         FIFOBufferFrame other = (FIFOBufferFrame) frame;

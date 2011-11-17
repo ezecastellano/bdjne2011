@@ -17,11 +17,13 @@ import ubadb.util.TestUtil;
  * Test for {@link LRUReplacementStrategy}
  * 
  */
-public class LRUReplacementStrategyTest extends BaseReplacementStrategyTest {
+public class LRUReplacementStrategyTest extends BaseReplacementStrategyTest 
+{
 
     /** @see BaseReplacementStrategyTest#createStrategy() */
     @Override
-    protected PageReplacementStrategy createStrategy() {
+    protected PageReplacementStrategy createStrategy()
+    {
         return new LRUReplacementStrategy();
     }
 
